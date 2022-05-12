@@ -1,17 +1,32 @@
 import React from "react";
+import CssBaseline from "@mui/material/CssBaseline";
+
 import ReactDOM from "react-dom/client";
 import PageNavigation from "./template/navigation";
 import reportWebVitals from "./utils/tools/reportWebVitals";
 import Layout from "./template/layout";
 import { BrowserRouter as Router } from "react-router-dom";
+import StyleProvider from "./template/theme/provider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Router>
-      <Layout>
-        <PageNavigation />
-      </Layout>
+      {
+        // Wrap Routing
+      }
+      <CssBaseline />
+      {
+        // MUI CSS
+      }
+      <StyleProvider>
+        {
+          // Provide Theme
+        }
+        <Layout>
+          <PageNavigation />
+        </Layout>
+      </StyleProvider>
     </Router>
   </React.StrictMode>
 );
