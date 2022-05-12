@@ -1,4 +1,5 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import useLocalStorage from "../../utils/hooks/useLocalStorage";
 import { useState, createContext, useMemo } from "react";
 
 // https://mui.com/material-ui/customization/dark-mode/
@@ -6,14 +7,19 @@ import { useState, createContext, useMemo } from "react";
 const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
 export default function StyleProvider({ children }) {
-  const [mode, setMode] = useState("light");
+  const [preferedTheme, setPreferedTheme] = useLocalStorage("theme", "light");
+  const [mode, setMode] = useState(preferedTheme);
+
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+        setMode((prevMode) => {
+          setPreferedTheme(prevMode === "light" ? "dark" : "light");
+          return prevMode === "light" ? "dark" : "light";
+        });
       },
     }),
-    []
+    [setPreferedTheme]
   );
 
   const theme = useMemo(
