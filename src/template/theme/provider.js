@@ -1,4 +1,5 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { useMediaQuery } from "@mui/material";
 import useLocalStorage from "../../utils/hooks/useLocalStorage";
 import { useState, createContext, useMemo } from "react";
 
@@ -7,8 +8,12 @@ import { useState, createContext, useMemo } from "react";
 const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
 export default function StyleProvider({ children }) {
-  const [preferedTheme, setPreferedTheme] = useLocalStorage("theme", "light");
-  const [mode, setMode] = useState(preferedTheme);
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const [preferedTheme, setPreferedTheme] = useLocalStorage(
+    "theme",
+    prefersDarkMode ? "dark" : "light"
+  );
+  const [mode, setMode] = useState(preferedTheme === "dark" ? "dark" : "light");
 
   const colorMode = useMemo(
     () => ({
