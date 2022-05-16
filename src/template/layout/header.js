@@ -1,6 +1,7 @@
 import { Grid, IconButton } from "@mui/material";
 import { CgMenuRight } from "react-icons/cg";
 import DrawerButton from "../buttons/drawer";
+import MenuBar from "../navigation/menu";
 
 export default function Header() {
   return (
@@ -40,7 +41,7 @@ export default function Header() {
             paddingRight: "10px",
           }}
         >
-          <DrawerButton ancho="left">
+          <DrawerButton element={<MenuBar />}>
             <IconButton
               color="primary"
               aria-label="menu button"

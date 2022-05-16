@@ -1,3 +1,3 @@
 export default function MainPage() {
-  return <>Main Page</>;
+  return <>Home Page</>;
 }

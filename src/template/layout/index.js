@@ -1,5 +1,6 @@
 import Header from "./header";
 import { Grid, Box } from "@mui/material";
+import MenuBar from "../navigation/menu";
 
 export default function Layout({ children }) {
   return (
@@ -23,7 +24,7 @@ export default function Layout({ children }) {
           {
             // Side menu bar
           }
-          Sidebar
+          <MenuBar />
         </Grid>
         <Grid
           item

@@ -40,6 +40,7 @@ export default function DrawerButton({ children, anchor, element }) {
         <div className="container">
           <Box
             sx={{
+              height: "100vh",
               width: anchor === "top" || anchor === "bottom" ? "auto" : 250,
               bgcolor: "background.paper",
             }}

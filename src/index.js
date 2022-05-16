@@ -16,15 +16,12 @@ root.render(
       {
         // Wrap Routing
       }
-      <CssBaseline />
-      {
-        // MUI CSS
-      }
+
       <StyleProvider>
+        <CssBaseline />
         {
           // Provide Theme
         }
-
         <Layout>
           <PageNavigation />
         </Layout>

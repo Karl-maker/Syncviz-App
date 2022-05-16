@@ -37,6 +37,7 @@ export default function StyleProvider({ children }) {
                 text: {
                   primary: "#2d3436",
                   secondary: "#636e72",
+                  tertiary: "#ffff",
                 },
                 background: {
                   paper: "#2980b9",
@@ -47,8 +48,25 @@ export default function StyleProvider({ children }) {
                   default: "#2c3e50",
                   paper: "#34495e",
                 },
+                text: {
+                  tertiary: "#ffff",
+                },
               }),
         },
+
+        /*
+          Overide not working, in CSS a transition is set for theme switching to avoid health issues to sensitive users
+        */
+
+        // overrides: {
+        //   MuiCssBaseline: {
+        //     "@global": {
+        //       body: {
+        //         transition: "all 1.0s linear",
+        //       },
+        //     },
+        //   },
+        // },
       }),
     [mode]
   );
@@ -59,3 +77,5 @@ export default function StyleProvider({ children }) {
     </ColorModeContext.Provider>
   );
 }
+
+export { ColorModeContext };
