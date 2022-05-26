@@ -31,7 +31,7 @@ import { FaCube, FaQuestion, FaInfo } from "react-icons/fa";
 
 */
 
-export default function MenuBar() {
+export default function MenuBar({ text_color }) {
   const ITEM_LIST = [
     {
       label: "Viewer",
@@ -114,11 +114,11 @@ export default function MenuBar() {
           <ListItem key={item.label}>
             <Tooltip title={item.info} placement="right-start">
               <ListItemButton sx={{ borderRadius: "10px" }}>
-                <ListItemIcon sx={{ color: "text.tertiary" }}>
+                <ListItemIcon sx={{ color: text_color || "text.default" }}>
                   {item.icon}
                 </ListItemIcon>
                 <ListItemText
-                  sx={{ color: "text.tertiary" }}
+                  sx={{ color: text_color || "text.default" }}
                   primary={item.label}
                 />
               </ListItemButton>

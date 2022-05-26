@@ -10,7 +10,7 @@ import { Drawer, Box } from "@mui/material";
 
 */
 
-export default function DrawerButton({ children, anchor, element }) {
+export default function DrawerButton({ children, anchor, element, height }) {
   const [state, setState] = useState({
     top: false,
     left: false,
@@ -40,7 +40,7 @@ export default function DrawerButton({ children, anchor, element }) {
         <div className="container">
           <Box
             sx={{
-              height: "100vh",
+              height: height,
               width: anchor === "top" || anchor === "bottom" ? "auto" : 250,
               bgcolor: "background.paper",
             }}
