@@ -9,6 +9,10 @@ export default function VirtualSpaceWidget({ virtual_room_id }) {
   const [virtualSpace] = useState(new VirtualSpace(virtual_room_id || "", {}));
   const [socket] = useState(virtualSpace.connect()); // ONLY for listeners, all actions on from class
 
+  // Join as soon as rendered
+
+  virtualSpace.join();
+
   useEffect(() => {
     socket.on("updates", (data) => {
       console.log(data);
