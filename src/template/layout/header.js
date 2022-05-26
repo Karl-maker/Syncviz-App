@@ -35,7 +35,7 @@ export default function Header() {
           paddingLeft: "10px",
         }}
       >
-        <img src="./logo192.png" alt="syncviz-logo" height={90} />
+        <img src="./logo192.png" alt="syncviz-logo" height={80} />
       </Grid>
       <Grid
         item
