@@ -18,14 +18,7 @@ export default function Layout({ children }) {
           }
           <Header />
         </Grid>
-        <Grid
-          container
-          xs={12}
-          sm={12}
-          md={12}
-          lg={12}
-          sx={{ bgcolor: "background.default", height: "100vh" }}
-        >
+        <Grid container sx={{ bgcolor: "background.default", height: "100vh" }}>
           <Grid
             item
             xs={0}

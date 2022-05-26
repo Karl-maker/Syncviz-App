@@ -11,23 +11,21 @@ import StyleProvider from "./template/theme/provider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <Router>
-      {
-        // Wrap Routing
-      }
+  <Router>
+    {
+      // Wrap Routing
+    }
 
-      <StyleProvider>
-        <CssBaseline />
-        {
-          // Provide Theme
-        }
-        <Layout>
-          <PageNavigation />
-        </Layout>
-      </StyleProvider>
-    </Router>
-  </React.StrictMode>
+    <StyleProvider>
+      <CssBaseline />
+      {
+        // Provide Theme
+      }
+      <Layout>
+        <PageNavigation />
+      </Layout>
+    </StyleProvider>
+  </Router>
 );
 
 // If you want to start measuring performance in your app, pass a function
