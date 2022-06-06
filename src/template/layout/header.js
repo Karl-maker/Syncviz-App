@@ -16,9 +16,9 @@ export default function Header() {
         item
         xs={0}
         sm={0}
-        md={0}
+        md={1}
         lg={1}
-        display={{ xs: "none", sm: "none", md: "none", lg: "block" }}
+        display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
         sx={{ bgcolor: "background.default", height: "100%" }}
       >
         {
@@ -29,7 +29,7 @@ export default function Header() {
         item
         xs={2}
         sm={4}
-        md={6}
+        md={10}
         lg={10}
         sx={{
           paddingLeft: "10px",
@@ -41,8 +41,7 @@ export default function Header() {
         item
         xs={2}
         sm={4}
-        md={6}
-        display={{ xs: "block", md: "block", lg: "none" }}
+        display={{ sm: "block", md: "none", lg: "none" }}
       >
         {
           // Doesn't show on larger screens
@@ -67,9 +66,9 @@ export default function Header() {
         item
         xs={0}
         sm={0}
-        md={0}
+        md={1}
         lg={1}
-        display={{ xs: "none", sm: "none", md: "none", lg: "block" }}
+        display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
         sx={{ bgcolor: "background.default", height: "100%" }}
       >
         {

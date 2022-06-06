@@ -5,7 +5,6 @@ import {
   ListItemText,
   ListItemButton,
   Divider,
-  Tooltip,
   Switch,
   Grid,
 } from "@mui/material";
@@ -112,17 +111,15 @@ export default function MenuBar({ text_color }) {
       <List>
         {ITEM_LIST.map((item, index) => (
           <ListItem key={item.label}>
-            <Tooltip title={item.info} placement="right-start">
-              <ListItemButton sx={{ borderRadius: "10px" }}>
-                <ListItemIcon sx={{ color: text_color || "text.default" }}>
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText
-                  sx={{ color: text_color || "text.default" }}
-                  primary={item.label}
-                />
-              </ListItemButton>
-            </Tooltip>
+            <ListItemButton sx={{ borderRadius: "10px" }}>
+              <ListItemIcon sx={{ color: text_color || "text.default" }}>
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText
+                sx={{ color: text_color || "text.default" }}
+                primary={item.label}
+              />
+            </ListItemButton>
           </ListItem>
         ))}
       </List>

@@ -23,9 +23,9 @@ export default function Layout({ children }) {
             item
             xs={0}
             sm={0}
-            md={0}
+            md={1}
             lg={1}
-            display={{ xs: "none", sm: "none", md: "none", lg: "block" }}
+            display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
             sx={{ bgcolor: "background.default", height: "100%" }}
           >
             {
@@ -36,9 +36,9 @@ export default function Layout({ children }) {
             item
             xs={0}
             sm={0}
-            md={0}
+            md={3}
             lg={3}
-            display={{ xs: "none", sm: "none", md: "none", lg: "block" }}
+            display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
             sx={{
               bgcolor: "background.default",
               height: "100%",
@@ -51,7 +51,7 @@ export default function Layout({ children }) {
             }
             <MenuBar />
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={7}>
+          <Grid item xs={12} sm={12} md={7} lg={7}>
             {
               // main body with page
             }
@@ -61,9 +61,9 @@ export default function Layout({ children }) {
             item
             xs={0}
             sm={0}
-            md={0}
+            md={1}
             lg={1}
-            display={{ xs: "none", sm: "none", md: "none", lg: "block" }}
+            display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
             sx={{ bgcolor: "background.default", height: "100%" }}
           >
             {
