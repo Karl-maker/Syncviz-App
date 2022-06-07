@@ -14,6 +14,14 @@ export default function VirtualSpaceComponent() {
   });
 
   useEffect(() => {
+    socket.on("connect", () => {
+      virtualSpace.join();
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket]);
+
+  useEffect(() => {
     socket.on("attributes", ({ virtual_space }) => {
       const { name, description, createdAt } = virtual_space;
 

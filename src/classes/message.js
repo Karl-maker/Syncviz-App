@@ -21,7 +21,6 @@ class Message {
         sx={{
           height: "auto",
           minHeight: "25px",
-          marginBottom: "5px",
           padding: "0px",
           paddingTop: "5px",
           paddingRight: "5px",

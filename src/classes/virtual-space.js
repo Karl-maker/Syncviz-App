@@ -1,14 +1,14 @@
 import { io } from "socket.io-client";
 import ChatRoom from "./chat-room";
 
-const BACKEND = "localhost:5000";
+const BACKEND = "192.168.0.5:5000";
 
 class VirtualSpace {
   constructor(id, { attendee, name, description }) {
     this._id = id || null;
     this._name = name || "";
     this._description = description || "";
-    this._attendee = attendee || { username: "" };
+    this._attendee = attendee || { username: "Karl-Johan" };
     this._socket = null;
     this._init = false;
 

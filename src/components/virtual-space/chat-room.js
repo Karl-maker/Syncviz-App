@@ -1,12 +1,15 @@
 import Prompt from "../../classes/prompt";
 import Message from "../../classes/message";
+import Alert from "../../classes/alert";
 import { TextField, InputAdornment, IconButton, Badge } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
 import { RiMessage2Fill } from "react-icons/ri";
 import { BiSend } from "react-icons/bi";
+import { MdFitScreen } from "react-icons/md";
 import { VirtualSpaceContext } from "../../widgets/virtual-space";
+import useDidMountEffect from "../../utils/hooks/useDidMountEffect";
 
-export default function ChatRoomComponent() {
+export default function ChatRoomComponent({ handleFullScreen }) {
   const { socket, virtualSpace } = useContext(VirtualSpaceContext);
   const [messages, setMessages] = useState(<></>);
   const [message, setMessage] = useState("");
@@ -16,6 +19,8 @@ export default function ChatRoomComponent() {
   const addMessage = (message) => {
     virtualSpace.chat_room.add(message);
     setMessages(virtualSpace.chat_room.display());
+
+    // append with useRef..
   };
 
   useEffect(() => {
@@ -24,7 +29,17 @@ export default function ChatRoomComponent() {
       addMessage(prompt);
     });
 
-    //return () => {};
+    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket]);
+
+  useEffect(() => {
+    socket.on("alerts", ({ message }) => {
+      const alert = new Alert(message, {});
+      addMessage(alert);
+    });
+
+    return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
@@ -37,11 +52,11 @@ export default function ChatRoomComponent() {
       addMessage(new_message);
     });
 
-    //return () => {};
+    return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
-  useEffect(() => {
+  useDidMountEffect(() => {
     if (!display) {
       setNewMessages((length) => length + 1);
     }
@@ -97,7 +112,8 @@ export default function ChatRoomComponent() {
         <IconButton
           size="small"
           sx={{ marginTop: "15px", marginLeft: "10px" }}
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
             const toggle = !display;
 
             toggleDisplay(toggle);
@@ -109,6 +125,13 @@ export default function ChatRoomComponent() {
           <Badge color="secondary" badgeContent={newMessages} max={999}>
             <RiMessage2Fill />
           </Badge>
+        </IconButton>
+
+        <IconButton
+          onClick={handleFullScreen}
+          sx={{ marginTop: "15px", marginLeft: "10px" }}
+        >
+          <MdFitScreen />
         </IconButton>
       </div>
     </div>

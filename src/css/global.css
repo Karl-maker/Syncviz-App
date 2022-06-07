@@ -2,8 +2,15 @@ html,
 body {
   padding: 0;
   margin: 0;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  box-sizing: border-box;
+  -ms-overflow-style: "none";
+  scrollbar-width: "none";
   transition: all 0.35s ease-in-out;
+}
+body::-webkit-scrollbar {
+  display: none;
 }
 
 #root {
@@ -14,12 +21,25 @@ li {
   list-style: none;
 }
 
-.page,
 .list {
   overflow-y: scroll;
   overflow-x: hidden;
   height: 100vh;
   padding-bottom: 30vh;
+  box-sizing: border-box;
+  -ms-overflow-style: "none";
+  scrollbar-width: "none";
+  opacity: 0.8;
+  transition: opacity 0.25s ease-in-out;
+  -moz-transition: opacity 0.25s ease-in-out;
+  -webkit-transition: opacity 0.25s ease-in-out;
+}
+
+.page {
+  height: 90vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding-bottom: 10vh;
   box-sizing: border-box;
   -ms-overflow-style: "none";
   scrollbar-width: "none";

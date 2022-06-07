@@ -12,13 +12,27 @@ export default function Layout({ children }) {
       }}
     >
       <Grid container columns={{ xs: 4, sm: 8, md: 12, lg: 12 }}>
-        <Grid item xs={12}>
+        <Grid
+          item
+          xs={4}
+          sm={8}
+          md={12}
+          lg={12}
+          sx={{
+            position: "relative",
+            height: "10vh",
+            top: 0,
+            width: "100%",
+            zIndex: 100,
+            bgcolor: "background.default",
+          }}
+        >
           {
             // header (top of screen)
           }
           <Header />
         </Grid>
-        <Grid container sx={{ bgcolor: "background.default", height: "100vh" }}>
+        <Grid container sx={{ bgcolor: "background.default", height: "90vh" }}>
           <Grid
             item
             xs={0}

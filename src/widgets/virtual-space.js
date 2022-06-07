@@ -12,8 +12,6 @@ export default function VirtualSpaceWidget({ virtual_room_id }) {
 
   // Join as soon as rendered
 
-  virtualSpace.join();
-
   return (
     <VirtualSpaceContext.Provider value={{ socket, virtualSpace }}>
       {
