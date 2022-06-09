@@ -21,6 +21,8 @@ export default function DialogButton({
   setOpen,
   open,
   element,
+  action_sx,
+  sx,
 }) {
   const handleClose = () => {
     setOpen(false);
@@ -45,7 +47,7 @@ export default function DialogButton({
             </DialogContentText>
           )}
         </DialogContent>
-        <DialogActions>{actions}</DialogActions>
+        <DialogActions sx={action_sx}>{actions}</DialogActions>
       </Dialog>
     </div>
   );

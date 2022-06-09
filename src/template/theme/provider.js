@@ -41,14 +41,14 @@ export default function StyleProvider({ children }) {
                 },
                 background: {
                   paper: "#2980b9",
-                  screen: "#fff",
+                  screen: "#ecf0f1",
                 },
               }
             : {
                 background: {
                   default: "#2c3e50",
                   paper: "#34495e",
-                  screen: "#2d3436",
+                  screen: "#34495e",
                 },
                 text: {
                   tertiary: "#ffff",

@@ -15,6 +15,7 @@ import { ColorModeContext } from "../theme/provider";
 // Icons
 
 import { FaCube, FaQuestion, FaInfo } from "react-icons/fa";
+import { IoIosAddCircle } from "react-icons/io";
 
 /*
 
@@ -32,6 +33,12 @@ import { FaCube, FaQuestion, FaInfo } from "react-icons/fa";
 
 export default function MenuBar({ text_color }) {
   const ITEM_LIST = [
+    {
+      label: "Create",
+      icon: <IoIosAddCircle />,
+      link: "/",
+      info: "Create virtual space",
+    },
     {
       label: "Viewer",
       icon: <FaCube />,

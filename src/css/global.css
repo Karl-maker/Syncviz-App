@@ -3,11 +3,12 @@ body {
   padding: 0;
   margin: 0;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: hidden;
   box-sizing: border-box;
   -ms-overflow-style: "none";
   scrollbar-width: "none";
   transition: all 0.35s ease-in-out;
+  max-height: 100vh;
 }
 body::-webkit-scrollbar {
   display: none;
@@ -36,14 +37,13 @@ li {
 }
 
 .page {
-  height: 90vh;
+  height: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
-  padding-bottom: 10vh;
-  box-sizing: border-box;
+  padding-bottom: 20vh; /* Bottom Menu */
   -ms-overflow-style: "none";
   scrollbar-width: "none";
-  opacity: 0.8;
+  opacity: 1;
   transition: opacity 0.25s ease-in-out;
   -moz-transition: opacity 0.25s ease-in-out;
   -webkit-transition: opacity 0.25s ease-in-out;

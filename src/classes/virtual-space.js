@@ -99,6 +99,14 @@ class VirtualSpace {
       description: this._description,
     });
   }
+
+  sendBlob(data) {
+    this._socket.emit("send-blob", data);
+  }
+
+  sendDirectBlob(user_id) {
+    this._socket.emit("send-direct-blob", { user_id });
+  }
 }
 
 export default VirtualSpace;

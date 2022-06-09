@@ -1,20 +1,27 @@
 import Prompt from "../../classes/prompt";
 import Message from "../../classes/message";
 import Alert from "../../classes/alert";
-import { TextField, InputAdornment, IconButton, Badge } from "@mui/material";
+import {
+  TextField,
+  InputAdornment,
+  IconButton,
+  Badge,
+  useMediaQuery,
+} from "@mui/material";
 import { useState, useEffect, useContext } from "react";
-import { RiMessage2Fill } from "react-icons/ri";
+import Share from "./share";
 import { BiSend } from "react-icons/bi";
-import { MdFitScreen } from "react-icons/md";
+import { RiMessage2Fill } from "react-icons/ri";
 import { VirtualSpaceContext } from "../../widgets/virtual-space";
 import useDidMountEffect from "../../utils/hooks/useDidMountEffect";
+import MEDIA from "../../utils/constants/media";
 
-export default function ChatRoomComponent({ handleFullScreen }) {
+export default function ChatRoomComponent({ display, toggleDisplay }) {
+  const mobile = useMediaQuery(MEDIA.MOBILE_MAX);
   const { socket, virtualSpace } = useContext(VirtualSpaceContext);
   const [messages, setMessages] = useState(<></>);
   const [message, setMessage] = useState("");
   const [newMessages, setNewMessages] = useState(0);
-  const [display, toggleDisplay] = useState(false);
 
   const addMessage = (message) => {
     virtualSpace.chat_room.add(message);
@@ -73,9 +80,10 @@ export default function ChatRoomComponent({ handleFullScreen }) {
       <ol
         style={{
           padding: "0px",
-          height: "83%",
+          height: mobile ? "80%" : "75%",
           opacity: display ? 1 : 0,
           display: "flex",
+          visibility: display ? "" : "hidden",
           flexDirection: "column-reverse",
           marginTop: "0px",
         }}
@@ -91,7 +99,12 @@ export default function ChatRoomComponent({ handleFullScreen }) {
           onChange={(e) => {
             setMessage(e.target.value);
           }}
-          sx={{ m: 0, width: "20ch", display: display ? "block" : "none" }}
+          sx={{
+            m: 0,
+            width: "20ch",
+            display: display ? "block" : "none",
+            marginRight: "20px",
+          }}
           InputProps={{
             endAdornment: (
               <InputAdornment position="start" sx={{ marginBottom: "2px" }}>
@@ -110,8 +123,7 @@ export default function ChatRoomComponent({ handleFullScreen }) {
           variant="standard"
         />
         <IconButton
-          size="small"
-          sx={{ marginTop: "15px", marginLeft: "10px" }}
+          sx={{ marginTop: "10px" }}
           onClick={(e) => {
             e.preventDefault();
             const toggle = !display;
@@ -122,20 +134,13 @@ export default function ChatRoomComponent({ handleFullScreen }) {
             }
           }}
         >
-          <Badge color="secondary" badgeContent={newMessages} max={999}>
+          <Badge badgeContent={newMessages} max={999} color="primary">
             <RiMessage2Fill />
           </Badge>
         </IconButton>
 
-        <IconButton
-          onClick={handleFullScreen}
-          sx={{ marginTop: "15px", marginLeft: "10px" }}
-        >
-          <MdFitScreen />
-        </IconButton>
+        <Share />
       </div>
     </div>
   );
-
-  //opacity: showMessages ? 1 : 0,
 }

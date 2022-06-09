@@ -1,8 +1,12 @@
 import Header from "./header";
-import { Grid, Box } from "@mui/material";
+import { Grid, Box, Paper, useMediaQuery } from "@mui/material";
 import MenuBar from "../navigation/menu";
+import BottomNavigationBar from "../navigation/bottom-navigation";
+import MEDIA from "../../utils/constants/media";
 
 export default function Layout({ children }) {
+  const mobile = useMediaQuery(MEDIA.MOBILE_MAX);
+
   return (
     <Box
       sx={{
@@ -26,13 +30,38 @@ export default function Layout({ children }) {
             zIndex: 100,
             bgcolor: "background.default",
           }}
+          display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
         >
           {
-            // header (top of screen)
+            // DESKTOP
           }
           <Header />
         </Grid>
-        <Grid container sx={{ bgcolor: "background.default", height: "90vh" }}>
+
+        <Grid
+          item
+          xs={4}
+          sm={8}
+          md={12}
+          lg={12}
+          sx={{
+            position: "fixed",
+            height: "10vh",
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 100,
+            bgcolor: "background.default",
+          }}
+          display={{ xs: "block", sm: "block", md: "none", lg: "none" }}
+        >
+          {
+            // MOBILE
+          }
+          <Header />
+        </Grid>
+
+        <Grid container sx={{ bgcolor: "background.default", height: "100vh" }}>
           <Grid
             item
             xs={0}
@@ -65,7 +94,15 @@ export default function Layout({ children }) {
             }
             <MenuBar />
           </Grid>
-          <Grid item xs={12} sm={12} md={7} lg={7}>
+          <Grid
+            item
+            className="page"
+            xs={12}
+            sm={12}
+            md={7}
+            lg={7}
+            sx={{ paddingTop: mobile ? 25 : "0" }}
+          >
             {
               // main body with page
             }
@@ -84,6 +121,25 @@ export default function Layout({ children }) {
               // White space
             }
           </Grid>
+        </Grid>
+        {
+          // bottom nav
+        }
+        <Grid
+          item
+          xs={4}
+          sm={8}
+          md={0}
+          lg={0}
+          display={{ xs: "block", sm: "block", md: "none", lg: "none" }}
+          sx={{ bgcolor: "background.default", height: "100%" }}
+        >
+          <Paper
+            sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 20 }}
+            elevation={3}
+          >
+            <BottomNavigationBar />
+          </Paper>
         </Grid>
       </Grid>
     </Box>

@@ -20,7 +20,6 @@ class Message {
       <Chip
         sx={{
           height: "auto",
-          minHeight: "25px",
           padding: "0px",
           paddingTop: "5px",
           paddingRight: "5px",
@@ -35,7 +34,6 @@ class Message {
               sx={{
                 bgcolor: "transparent",
                 height: "auto",
-                minHeight: "25px",
                 marginBottom: "5px",
               }}
             />

@@ -1,4 +1,4 @@
-import { Typography, Box, Grid, Chip } from "@mui/material";
+import { Typography, Box, Grid, Chip, Skeleton } from "@mui/material";
 import { useEffect, useContext, useState } from "react";
 import { VirtualSpaceContext } from "../../widgets/virtual-space";
 import { checkHowManyDaysAgo } from "../../utils/others/date";
@@ -44,10 +44,22 @@ export default function VirtualSpaceComponent() {
         gutterBottom
         component="div"
       >
-        {context.name}
+        {context.name ? (
+          context.name
+        ) : (
+          <Skeleton variant="text" width="30%" height="20px" />
+        )}
       </Typography>
       <Typography variant="body2" gutterBottom sx={{ color: "text.secondary" }}>
-        {context.description}
+        {context.description ? (
+          context.description
+        ) : (
+          <>
+            <Skeleton variant="text" />
+            <Skeleton variant="text" />
+            <Skeleton variant="text" />
+          </>
+        )}
       </Typography>
       {
         // Extra Info
