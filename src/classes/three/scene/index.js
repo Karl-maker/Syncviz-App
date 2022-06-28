@@ -1,18 +1,17 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import GLTFScene from "../elements/gltf";
 
 class ThreeScene {
   constructor({ dimensions }) {
     // Create Scene
     this._scene = new THREE.Scene();
-    // Get Dimentions
+    this._view = [];
     this._dimensions = dimensions || {
       width: window.innerWidth,
       height: window.innerHeight,
     };
-    // Create Renderer
     this._renderer = new THREE.WebGLRenderer({ antialias: true });
-    // Create Camera
     this._camera = new THREE.PerspectiveCamera(
       45,
       this._dimensions.width / this._dimensions.height,
@@ -58,6 +57,33 @@ class ThreeScene {
     this._controls = controls;
   }
 
+  get view() {
+    return this._view;
+  }
+
+  set view(view) {
+    this._view = view;
+  }
+
+  setupDefaultLighting() {
+    let light = new THREE.DirectionalLight("#ffffff", 0.2);
+    let pointLight = new THREE.PointLight("#ffffff", 0.2);
+    let pointLightBack = new THREE.PointLight("#ffffff", 0.2);
+    let ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+    light.position.set(0, -70, 100).normalize();
+    pointLight.position.set(0, -40, 300);
+    pointLightBack.position.set(0, -40, -100);
+
+    this._scene.add(light);
+    this._scene.add(pointLight);
+    this._scene.add(pointLightBack);
+    this._scene.add(ambientLight);
+  }
+
+  add({ blob }) {
+    this._view = new GLTFScene({ blob, scene: this._scene });
+  }
+
   handleWindowResize({ width, height }) {
     this._camera.aspect = width / height;
     this._camera.updateProjectMatrix();
@@ -76,19 +102,8 @@ class ThreeScene {
     this._renderer.render(this._scene, this._camera);
   }
 
-  addBox({ dimensions, color }) {
-    let geometry = new THREE.BoxGeometry(
-      dimensions ? dimensions.width : 5,
-      dimensions ? dimensions.height : 5,
-      dimensions ? dimensions.depth : 5
-    );
-
-    let material = new THREE.MeshBasicMaterial({
-      color: color || 0x00ff00,
-    });
-
-    let cube = new THREE.Mesh(geometry, material);
-    this._scene.add(cube);
+  addMesh(mesh) {
+    this._scene.add(mesh); // THREE.Mesh
   }
 }
 

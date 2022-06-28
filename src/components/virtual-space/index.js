@@ -14,14 +14,6 @@ export default function VirtualSpaceComponent() {
   });
 
   useEffect(() => {
-    socket.on("connect", () => {
-      virtualSpace.join();
-    });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [socket]);
-
-  useEffect(() => {
     socket.on("attributes", ({ virtual_space }) => {
       const { name, description, createdAt } = virtual_space;
 
@@ -31,16 +23,16 @@ export default function VirtualSpaceComponent() {
 
       setContext({ name, description, createdAt });
     });
-
+    return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
   return (
-    <Box sx={{ width: "100%", padding: "15px" }}>
+    <Box sx={{ width: "100%", padding: "5px", margin: "0px", height: "100%" }}>
       <Viewer />
-      <Typography
+      {/* <Typography
         variant="h5"
-        sx={{ marginTop: "30px" }}
+        sx={{ marginTop: "30px", marginLeft: "10px", marginRight: "10px" }}
         gutterBottom
         component="div"
       >
@@ -49,8 +41,17 @@ export default function VirtualSpaceComponent() {
         ) : (
           <Skeleton variant="text" width="30%" height="20px" />
         )}
-      </Typography>
-      <Typography variant="body2" gutterBottom sx={{ color: "text.secondary" }}>
+        </Typography> */}
+      <Typography
+        variant="body2"
+        gutterBottom
+        sx={{
+          color: "text.secondary",
+          marginTop: "30px",
+          marginLeft: "10px",
+          marginRight: "10px",
+        }}
+      >
         {context.description ? (
           context.description
         ) : (
@@ -64,7 +65,11 @@ export default function VirtualSpaceComponent() {
       {
         // Extra Info
       }
-      <Grid container spacing={2} sx={{ marginTop: "10px" }}>
+      <Grid
+        container
+        spacing={2}
+        sx={{ marginTop: "10px", paddingLeft: "5px", paddingRight: "5px" }}
+      >
         <Grid item xs={8}>
           {
             // Current Viewers List

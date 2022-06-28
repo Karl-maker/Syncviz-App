@@ -14,8 +14,8 @@ import { ColorModeContext } from "../theme/provider";
 
 // Icons
 
-import { FaCube, FaQuestion, FaInfo } from "react-icons/fa";
-import { IoIosAddCircle } from "react-icons/io";
+import { FaQuestion, FaInfo } from "react-icons/fa";
+import { BiAddToQueue, BiCube } from "react-icons/bi";
 
 /*
 
@@ -35,13 +35,13 @@ export default function MenuBar({ text_color }) {
   const ITEM_LIST = [
     {
       label: "Create",
-      icon: <IoIosAddCircle />,
+      icon: <BiAddToQueue />,
       link: "/",
       info: "Create virtual space",
     },
     {
       label: "Viewer",
-      icon: <FaCube />,
+      icon: <BiCube />,
       link: "/",
       info: "Viewer to start 3D video conference",
     },

@@ -1,9 +1,12 @@
-import { Grid } from "@mui/material";
+import { Grid, useMediaQuery } from "@mui/material";
 import { CgMenuRight } from "react-icons/cg";
 import DrawerButton from "../buttons/drawer";
 import MenuBar from "../navigation/menu";
+import MEDIA from "../../utils/constants/media";
 
 export default function Header() {
+  const mobile = useMediaQuery(MEDIA.MOBILE_MAX);
+
   return (
     <Grid
       container
@@ -35,7 +38,7 @@ export default function Header() {
           paddingLeft: "10px",
         }}
       >
-        <img src="./logo192.png" alt="syncviz-logo" height={80} />
+        <img src="./logo192.png" alt="syncviz-logo" height={mobile ? 70 : 80} />
       </Grid>
       <Grid
         item
@@ -58,7 +61,9 @@ export default function Header() {
             anchor="bottom"
             height="auto"
           >
-            <CgMenuRight style={{ fontSize: "40px", marginRight: "5px" }} />
+            <CgMenuRight
+              style={{ fontSize: mobile ? "30px" : "40px", marginRight: "5px" }}
+            />
           </DrawerButton>
         </div>
       </Grid>

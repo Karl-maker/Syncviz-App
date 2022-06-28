@@ -1,6 +1,6 @@
 import { useEffect, useContext, useRef } from "react";
 import { VirtualSpaceContext } from "../../widgets/virtual-space";
-import ThreeScene from "../../classes/three-dimention-visualizer";
+import ThreeScene from "../../classes/three/scene";
 import MEDIA from "../../utils/constants/media";
 import { useMediaQuery, Box } from "@mui/material";
 
@@ -9,16 +9,24 @@ export default function ThreeDimentionalViewer() {
   const canvas = useRef();
   const three = new ThreeScene({});
   const mobile = useMediaQuery(MEDIA.MOBILE_MAX);
-  three.positionCamera({ x: 0, y: 2, z: 50 });
+  three.positionCamera({ x: 0, y: 2, z: 5 });
+  three.setupDefaultLighting();
 
   const animate = () => {
     requestAnimationFrame(animate);
+
     three.controls.update();
     three.renderer.render(three.scene, three.camera);
   };
 
   useEffect(() => {
-    socket.on("blobs", (file) => {});
+    socket.on("blobs", (file) => {
+      three.add({
+        blob: file.body,
+      });
+      three.view.render();
+      animate();
+    });
 
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -37,8 +45,6 @@ export default function ThreeDimentionalViewer() {
     });
 
     current.appendChild(three.renderer.domElement);
-    three.addBox({});
-    animate();
     return () => current.removeChild(three.renderer.domElement);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -48,11 +54,14 @@ export default function ThreeDimentionalViewer() {
     <Box
       ref={canvas}
       sx={{
-        borderRadius: mobile ? "0" : "2em",
-        margin: "0px",
         bgcolor: "background.screen",
+        zIndex: 10000,
+        borderRadius: mobile ? "2em" : "2em",
         height: mobile ? "60vh" : "50vh",
-        width: mobile ? "100vw" : "100%",
+        width: mobile ? "auto" : "100%",
+        overflow: "hidden",
+        margin: mobile ? "0px" : "0px",
+        padding: "0",
       }}
     ></Box>
   );

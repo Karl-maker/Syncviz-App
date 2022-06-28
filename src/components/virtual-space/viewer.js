@@ -28,6 +28,7 @@ export default function Viewer() {
         </IconButton>
       );
     });
+    return () => {};
   }, [socket]);
 
   useEffect(() => {
@@ -38,6 +39,7 @@ export default function Viewer() {
         </IconButton>
       );
     });
+    return () => {};
   }, [socket]);
 
   useEffect(() => {
@@ -54,13 +56,15 @@ export default function Viewer() {
     <div
       style={{
         position: "relative",
-        padding: 0,
-        margin: mobile ? "-15px" : "0px",
+        margin: mobile ? "10px" : "0px",
+        padding: "0px",
+        width: "auto",
       }}
     >
       {
         // 3D View
       }
+
       <ThreeDimentionalViewer />
 
       {
@@ -93,7 +97,7 @@ export default function Viewer() {
           left: "0%",
           marginLeft: "25px",
           height: "100%",
-          width: displayChat ? "60%" : "0%",
+          width: displayChat ? "65%" : "0%",
         }}
       >
         <ChatRoomComponent

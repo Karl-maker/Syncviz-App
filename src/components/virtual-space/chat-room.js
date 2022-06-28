@@ -15,6 +15,7 @@ import { RiMessage2Fill } from "react-icons/ri";
 import { VirtualSpaceContext } from "../../widgets/virtual-space";
 import useDidMountEffect from "../../utils/hooks/useDidMountEffect";
 import MEDIA from "../../utils/constants/media";
+import BlobMessage from "../../classes/blob-message";
 
 export default function ChatRoomComponent({ display, toggleDisplay }) {
   const mobile = useMediaQuery(MEDIA.MOBILE_MAX);
@@ -51,12 +52,23 @@ export default function ChatRoomComponent({ display, toggleDisplay }) {
   }, [socket]);
 
   useEffect(() => {
+    socket.on("blobs", () => {
+      const new_message = new BlobMessage("scene recieved", {});
+      addMessage(new_message);
+    });
+
+    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket]);
+
+  useEffect(() => {
     socket.on("messages", ({ message, sender, timestamp }) => {
       const new_message = new Message(message, {
         username: sender.username,
         timestamp,
       });
       addMessage(new_message);
+      return () => {};
     });
 
     return () => {};
@@ -80,7 +92,7 @@ export default function ChatRoomComponent({ display, toggleDisplay }) {
       <ol
         style={{
           padding: "0px",
-          height: mobile ? "80%" : "75%",
+          height: mobile ? "82%" : "75%",
           opacity: display ? 1 : 0,
           display: "flex",
           visibility: display ? "" : "hidden",
@@ -91,37 +103,44 @@ export default function ChatRoomComponent({ display, toggleDisplay }) {
         {messages}
       </ol>
       <div style={{ display: "flex", alignItems: "center" }}>
-        <TextField
-          label="Write Message"
-          size="small"
-          id="input-message"
-          value={message}
-          onChange={(e) => {
-            setMessage(e.target.value);
-          }}
-          sx={{
-            m: 0,
-            width: "20ch",
-            display: display ? "block" : "none",
-            marginRight: "20px",
-          }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="start" sx={{ marginBottom: "2px" }}>
-                <IconButton
-                  size="small"
-                  onClick={() => {
-                    if (message) virtualSpace.chat_room.send(message);
-                    setMessage("");
-                  }}
-                >
-                  <BiSend />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          variant="standard"
-        />
+        {display && (
+          <TextField
+            inputRef={(input) => {
+              if (input != null) {
+                input.focus();
+              }
+            }}
+            label="Write Message"
+            size="small"
+            id="input-message"
+            value={message}
+            onChange={(e) => {
+              setMessage(e.target.value);
+            }}
+            sx={{
+              m: 0,
+              width: "20ch",
+              display: display ? "block" : "none",
+              marginRight: "20px",
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start" sx={{ marginBottom: "2px" }}>
+                  <IconButton
+                    size="small"
+                    onClick={() => {
+                      if (message) virtualSpace.chat_room.send(message);
+                      setMessage("");
+                    }}
+                  >
+                    <BiSend />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            variant="standard"
+          />
+        )}
         <IconButton
           sx={{ marginTop: "10px" }}
           onClick={(e) => {

@@ -4,33 +4,12 @@ import { RiShareFill } from "react-icons/ri";
 import { MdOutlineContentCopy } from "react-icons/md";
 import DialogButton from "../../template/buttons/dialog";
 import { useState, useRef } from "react";
+import copyText from "../../utils/others/clipboard";
 
 export default function Share() {
   const [open, toggleOpen] = useState(false);
   const theme = useTheme();
   const clipboard = useRef();
-
-  function copyText(element) {
-    var input = element;
-
-    if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
-      // handle iOS devices
-      input.contenteditable = true;
-      input.readonly = false;
-
-      var range = document.createRange();
-      range.selectNodeContents(input);
-
-      var selection = window.getSelection();
-      selection.removeAllRanges();
-      selection.addRange(range);
-      input.setSelectionRange(0, 999999);
-    } else {
-      // other devices are easy
-      input.select();
-    }
-    document.execCommand("copy");
-  }
 
   return (
     <>

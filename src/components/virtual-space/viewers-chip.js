@@ -10,7 +10,7 @@ export default function ViewersChip() {
     socket.on("viewers", ({ users }) => {
       setContext(users);
     });
-
+    return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
