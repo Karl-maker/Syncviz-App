@@ -3,39 +3,37 @@ import {
   SpeedDial,
   SpeedDialIcon,
   SpeedDialAction,
-  IconButton,
-  Stack,
+  useMediaQuery,
+  Typography,
+  Button,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { BiCubeAlt } from "react-icons/bi";
+//import { styled } from "@mui/material/styles";
+import { BiLogOut } from "react-icons/bi";
 import { useState, useContext } from "react";
-import { useMediaQuery, Button } from "@mui/material";
 import DialogButton from "../../template/buttons/dialog";
 import MEDIA from "../../utils/constants/media";
+import { useNavigate } from "react-router-dom";
 
 export default function ManageVirtualSpace() {
   // Have Virtual Room there WITH snackbar
   const { virtualSpace } = useContext(VirtualSpaceContext);
-  const [add3DDialog, setAdd3DDialog] = useState(false);
-  const [blob, setBlob] = useState(null);
+  const navigate = useNavigate();
+  const [endMetaverseRoomDialog, toggleEndMetaverseRoomDialog] =
+    useState(false);
+  //const [blob, setBlob] = useState(null);
   const mobile = useMediaQuery(MEDIA.MOBILE_MAX);
   const actions = [
     {
-      name: "Add Scene",
-      icon: <BiCubeAlt color="#fff" />,
-      action: () => setAdd3DDialog(true),
+      name: "End Metaverse Room",
+      icon: <BiLogOut color="#fff" />,
+      action: () => toggleEndMetaverseRoomDialog(true),
     },
   ];
-
-  const Input = styled("input")({});
-  const fileUpload = (event) => {
-    console.log(event.target.files[0]);
-  };
 
   return (
     <>
       <SpeedDial
-        ariaLabel="Virtual Space Manager"
+        ariaLabel="Metaverse Room Manager"
         sx={{
           position: "fixed",
           bottom: mobile ? 65 : 30,
@@ -53,41 +51,26 @@ export default function ManageVirtualSpace() {
         ))}
       </SpeedDial>
       <DialogButton
-        title="Add 3D Scene"
+        title="End Metaverse Room"
         content={
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <label htmlFor="icon-button-file">
-              <Input
-                accept=".gltf, .glb" //"model/gltf+json"
-                id="icon-button-file"
-                type="file"
-                onChange={fileUpload}
-              />
-              <IconButton
-                aria-label="upload 3d-files"
-                component="span"
-                sx={{ color: "text.tertiary" }}
-              >
-                <BiCubeAlt />
-              </IconButton>
-            </label>
-          </Stack>
+          <Typography>This will end room for all other users</Typography>
         }
-        open={add3DDialog}
-        setOpen={setAdd3DDialog}
+        open={endMetaverseRoomDialog}
+        setOpen={toggleEndMetaverseRoomDialog}
         actions={
           <>
             <Button
               variant="filled"
-              onClick={() => {}}
-              sx={{ color: "text.tertiary" }}
+              onClick={() => {
+                virtualSpace.end();
+                navigate(0);
+              }}
             >
-              Add
+              End
             </Button>
             <Button
               variant="filled"
-              onClick={() => setAdd3DDialog(false)}
-              sx={{ color: "text.tertiary" }}
+              onClick={() => toggleEndMetaverseRoomDialog(false)}
             >
               Cancel
             </Button>

@@ -5,26 +5,30 @@ import { VirtualSpaceContext } from "../../widgets/virtual-space";
 import { Button, IconButton, useMediaQuery } from "@mui/material";
 import { BiLinkAlt } from "react-icons/bi";
 import DialogButton from "../../template/buttons/dialog";
-import ThreeDimentionalViewer from "./3d-viewer";
+import ThreeDimentionalViewer from "./babylon-viewer";
 import MEDIA from "../../utils/constants/media";
 
 export default function Viewer() {
   const { socket, virtualSpace } = useContext(VirtualSpaceContext);
   const [connectionStatus, setConnectionStatus] = useState(false);
   const [connectDialog, setConnectDialog] = useState(false);
+  const [displayTimer, setDisplayTimer] = useState(false);
   const [displayChat, toggleDisplayChat] = useState(false);
   const mobile = useMediaQuery(MEDIA.MOBILE_MAX);
 
   useEffect(() => {
     socket.on("disconnect", () => {
       // Allow user to attempt to rejoin
+      setDisplayTimer(false);
       setConnectionStatus(
         <IconButton
+          sx={{ bgcolor: "#d63031" }}
+          size="small"
           onClick={() => {
             setConnectDialog(true);
           }}
         >
-          <BiLinkAlt color="#d63031" />
+          <BiLinkAlt />
         </IconButton>
       );
     });
@@ -33,9 +37,10 @@ export default function Viewer() {
 
   useEffect(() => {
     socket.on("connect", () => {
+      setDisplayTimer(true);
       setConnectionStatus(
-        <IconButton>
-          <BiLinkAlt color="#00b894" />
+        <IconButton size="small" sx={{ bgcolor: "#00b894" }}>
+          <BiLinkAlt />
         </IconButton>
       );
     });
@@ -45,8 +50,8 @@ export default function Viewer() {
   useEffect(() => {
     socket.on("reconnect", () => {
       setConnectionStatus(
-        <IconButton>
-          <BiLinkAlt color="#fdcb6e" />
+        <IconButton size="small" sx={{ bgcolor: "#fdcb6e" }}>
+          <BiLinkAlt />
         </IconButton>
       );
     });
@@ -56,7 +61,7 @@ export default function Viewer() {
     <div
       style={{
         position: "relative",
-        margin: mobile ? "10px" : "0px",
+        margin: mobile ? "5px" : "0px",
         padding: "0px",
         width: "auto",
       }}
@@ -65,7 +70,9 @@ export default function Viewer() {
         // 3D View
       }
 
-      <ThreeDimentionalViewer />
+      <ThreeDimentionalViewer
+        modelUrl={"https://assets.babylonjs.com/meshes/"}
+      />
 
       {
         // Overlay Content
@@ -83,7 +90,7 @@ export default function Viewer() {
           marginTop: "15px",
         }}
       >
-        <Timer />
+        <Timer on={displayTimer} />
       </div>
       {
         // Message
@@ -114,8 +121,8 @@ export default function Viewer() {
           zIndex: 20,
           top: "0%",
           left: "0%",
-          marginLeft: "10px",
-          marginTop: "10px",
+          marginLeft: "15px",
+          marginTop: "15px",
         }}
       >
         {connectionStatus && connectionStatus}
@@ -138,15 +145,10 @@ export default function Viewer() {
                 virtualSpace.join();
                 setConnectDialog(false);
               }}
-              sx={{ color: "text.tertiary" }}
             >
               Join
             </Button>
-            <Button
-              variant="filled"
-              onClick={() => setConnectDialog(false)}
-              sx={{ color: "text.tertiary" }}
-            >
+            <Button variant="filled" onClick={() => setConnectDialog(false)}>
               Cancel
             </Button>
           </>

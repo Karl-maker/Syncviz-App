@@ -1,7 +1,6 @@
-import { Typography, Box, Grid, Chip, Skeleton } from "@mui/material";
+import { Typography, Box, Grid, Skeleton, Chip } from "@mui/material";
 import { useEffect, useContext, useState } from "react";
 import { VirtualSpaceContext } from "../../widgets/virtual-space";
-import { checkHowManyDaysAgo } from "../../utils/others/date";
 import ViewersChip from "./viewers-chip";
 import Viewer from "./viewer";
 
@@ -15,11 +14,15 @@ export default function VirtualSpaceComponent() {
 
   useEffect(() => {
     socket.on("attributes", ({ virtual_space }) => {
-      const { name, description, createdAt } = virtual_space;
+      const { _id, name, description, createdAt, time_limit, user } =
+        virtual_space;
 
+      virtualSpace.id = _id;
       virtualSpace.name = name;
       virtualSpace.description = description;
+      virtualSpace.time_limit = time_limit;
       virtualSpace.createdAt = createdAt;
+      virtualSpace.host = user;
 
       setContext({ name, description, createdAt });
     });
@@ -70,29 +73,22 @@ export default function VirtualSpaceComponent() {
         spacing={2}
         sx={{ marginTop: "10px", paddingLeft: "5px", paddingRight: "5px" }}
       >
-        <Grid item xs={8}>
+        <Grid item xs={4}>
           {
             // Current Viewers List
           }
           <ViewersChip />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={8} sx={{ display: "flex", justifyContent: "flex-end" }}>
           {
             // Date of creation
           }
           <Chip
-            variant="outlined"
             label={
-              <Typography
-                variant="caption"
-                display="block"
-                gutterBottom
-                sx={{ color: "text.secondary" }}
-              >
-                {checkHowManyDaysAgo(new Date(context.createdAt), new Date())}
-              </Typography>
+              <>
+                {virtualSpace.host.display({ backgroundColor: "transparent" })}
+              </>
             }
-            sx={{ borderWidth: "0px", width: "100%", justifyContent: "end" }}
           />
         </Grid>
       </Grid>

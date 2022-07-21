@@ -10,12 +10,15 @@ import {
 } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { ColorModeContext } from "../theme/provider";
+import PAGES from "../../utils/constants/page-names";
 
 // Icons
 
 import { FaQuestion, FaInfo } from "react-icons/fa";
-import { BiAddToQueue, BiCube } from "react-icons/bi";
+import { BiAddToQueue } from "react-icons/bi";
+import { RiEarthFill } from "react-icons/ri";
 
 /*
 
@@ -32,30 +35,32 @@ import { BiAddToQueue, BiCube } from "react-icons/bi";
 */
 
 export default function MenuBar({ text_color }) {
+  const navigate = useNavigate();
+
   const ITEM_LIST = [
     {
       label: "Create",
       icon: <BiAddToQueue />,
-      link: "/",
       info: "Create virtual space",
+      action: () => navigate(PAGES.CREATE_METAVERSE),
     },
     {
-      label: "Viewer",
-      icon: <BiCube />,
-      link: "/",
+      label: "Feed",
+      icon: <RiEarthFill />,
       info: "Viewer to start 3D video conference",
+      action: () => navigate(PAGES.METAVERSE_FEED),
     },
     {
       label: "About",
       icon: <FaInfo />,
-      link: "/about",
       info: "Learn more about us here",
+      action: () => navigate(PAGES.ABOUT),
     },
     {
       label: "Help",
       icon: <FaQuestion />,
-      link: "/help",
       info: "Get help to learn more about our service",
+      action: () => navigate(PAGES.HELP),
     },
   ];
 
@@ -118,7 +123,7 @@ export default function MenuBar({ text_color }) {
       <List>
         {ITEM_LIST.map((item, index) => (
           <ListItem key={item.label}>
-            <ListItemButton sx={{ borderRadius: "10px" }}>
+            <ListItemButton sx={{ borderRadius: "10px" }} onClick={item.action}>
               <ListItemIcon sx={{ color: text_color || "text.default" }}>
                 {item.icon}
               </ListItemIcon>

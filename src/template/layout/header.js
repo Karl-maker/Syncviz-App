@@ -3,9 +3,13 @@ import { CgMenuRight } from "react-icons/cg";
 import DrawerButton from "../buttons/drawer";
 import MenuBar from "../navigation/menu";
 import MEDIA from "../../utils/constants/media";
+import SearchBar from "../../components/search-bar/dummy";
+import PAGE from "../../utils/constants/page-names";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const mobile = useMediaQuery(MEDIA.MOBILE_MAX);
+  const navigation = useNavigate();
 
   return (
     <Grid
@@ -13,7 +17,7 @@ export default function Header() {
       direction="row"
       justifyContent="center"
       alignItems="center"
-      columns={{ xs: 4, sm: 8, md: 12, lg: 12 }}
+      columns={{ xs: 12, sm: 12, md: 12, lg: 12 }}
     >
       <Grid
         item
@@ -30,20 +34,39 @@ export default function Header() {
       </Grid>
       <Grid
         item
-        xs={2}
-        sm={4}
-        md={10}
-        lg={10}
+        xs={3}
+        sm={3}
+        md={8}
+        lg={8}
         sx={{
           paddingLeft: "10px",
         }}
       >
-        <img src="./logo192.png" alt="syncviz-logo" height={mobile ? 70 : 80} />
+        <img
+          src="./logo192.png"
+          alt="syncviz-logo"
+          height={mobile ? 70 : 80}
+          onClick={() => navigation(PAGE.METAVERSE_FEED)}
+        />
+      </Grid>
+      <Grid
+        item
+        xs={7}
+        sm={7}
+        md={2}
+        lg={2}
+        display={{ xs: "block", sm: "block", md: "block", lg: "block" }}
+        sx={{ display: "flex", justifyContent: "flex-end" }}
+      >
+        {
+          // Search Bar
+        }
+        <SearchBar />
       </Grid>
       <Grid
         item
         xs={2}
-        sm={4}
+        sm={2}
         display={{ sm: "block", md: "none", lg: "none" }}
       >
         {
@@ -57,7 +80,11 @@ export default function Header() {
           }}
         >
           <DrawerButton
-            element={<MenuBar text_color="text.tertiary" />}
+            element={
+              <>
+                <MenuBar text_color="text.tertiary" />
+              </>
+            }
             anchor="bottom"
             height="auto"
           >

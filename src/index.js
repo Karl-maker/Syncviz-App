@@ -8,6 +8,7 @@ import reportWebVitals from "./utils/tools/reportWebVitals";
 import Layout from "./template/layout";
 import { BrowserRouter as Router } from "react-router-dom";
 import StyleProvider from "./template/theme/provider";
+import { SearchContextProvider } from "./context/search";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -17,13 +18,15 @@ root.render(
     }
 
     <StyleProvider>
-      <CssBaseline />
-      {
-        // Provide Theme
-      }
-      <Layout>
-        <PageNavigation />
-      </Layout>
+      <SearchContextProvider>
+        <CssBaseline />
+        {
+          // Provide Theme
+        }
+        <Layout>
+          <PageNavigation />
+        </Layout>
+      </SearchContextProvider>
     </StyleProvider>
   </Router>
 );

@@ -1,0 +1,178 @@
+import VirtualSpaceWidget from "../widgets/virtual-space";
+import { useMemo, useState, useEffect } from "react";
+import {
+  Box,
+  Typography,
+  TextField,
+  IconButton,
+  InputAdornment,
+  Button,
+  useMediaQuery,
+} from "@mui/material";
+import { BiCube } from "react-icons/bi";
+import VirtualSpaceClass from "../classes/virtual-space";
+import MEDIA from "../utils/constants/media";
+
+export default function CreateVirtualSpace() {
+  // Create Space On Site
+
+  /*
+
+  Cannot re make another Metaverse room from refreshing so a re-render tracker is made
+
+  */
+
+  const mobile = useMediaQuery(MEDIA.MOBILE_MAX);
+  const [reRender, setReRender] = useState(0);
+  const [init, setInit] = useState(false);
+  const [attributes, setAttributes] = useState({ description: "" });
+
+  /*
+
+  1. Fill out info
+  2. Create Metaverse Room
+
+  */
+
+  useEffect(() => setReRender((reRender) => reRender + 1), []);
+
+  const virtualSpace = useMemo(
+    () =>
+      new VirtualSpaceClass(null, {
+        description: attributes.description,
+      }),
+    // eslint-disable-next-line
+    []
+  );
+
+  const socket = useMemo(
+    () => {
+      if (reRender <= 1) {
+        return virtualSpace.connect({});
+      }
+
+      return null;
+    },
+    // eslint-disable-next-line
+    [virtualSpace]
+  );
+
+  const submitMetaverse = ()=>{
+    
+  }
+
+  return (
+    <>
+      {init ? (
+        <>
+          {
+            // If Initialized / Created Show this
+          }
+          {socket ? (
+            <VirtualSpaceWidget
+              manage={true}
+              socket={socket}
+              virtualSpace={virtualSpace}
+            />
+          ) : (
+            <Box
+              sx={{
+                margin: "5px",
+                height: "500px",
+                borderRadius: "20px",
+                backgroundColor: "rgba(0, 0, 0, 0.2)",
+                backdropFilter: "blur(5px)",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Typography variant="subtitle1" sx={{ alignSelf: "center" }}>
+                Metaverse Room has been ended.
+              </Typography>
+            </Box>
+          )}
+        </>
+      ) : (
+        <Box
+          sx={{
+            margin: "5px",
+            height: "500px",
+          }}
+        >
+          <Typography
+            variant="h5"
+            sx={{
+              alignSelf: "center",
+              textAlign: "center",
+              marginBottom: "10px",
+              marginTop: "20px",
+            }}
+          >
+            Create Metaverse Room
+          </Typography>
+
+          <Typography
+            variant="subtitle1"
+            sx={{
+              alignSelf: "center",
+              textAlign: "center",
+              marginBottom: "10px",
+            }}
+          >
+            Start your own Metaverse Room
+          </Typography>
+
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              marginBottom: "10px",
+            }}
+          >
+            <TextField
+              id="outlined-multiline-description"
+              label="Caption"
+              placeholder="Write a caption..."
+              multiline
+              fullWidth
+              rows={4}
+              maxRows={4}
+              value={attributes.description}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton sx={{ margin: "10px" }}>
+                      <BiCube />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              onChange={(e) => {
+                setAttributes((attribute) => ({
+                  ...attribute,
+                  description: e.target.value,
+                }));
+              }}
+              sx={{ alignSelf: "center", width: "70%" }}
+            />
+          </div>
+
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              paddingLeft: "20px",
+              paddingRight: "20px",
+            }}
+          >
+            <Button variant="contained" fullWidth={mobile} onClick={submitMetaverse}>
+              Create
+            </Button>
+          </div>
+        </Box>
+      )}
+    </>
+  );
+}

@@ -1,10 +1,11 @@
 import { Chip, Avatar, Divider, Typography } from "@mui/material";
 
 class Message {
-  constructor(message, { timestamp, username }) {
+  constructor(message, { timestamp, username, color }) {
     this._message = message || "";
     this._timestamp = timestamp || "";
     this._username = username || "";
+    this._color = color || null;
   }
 
   get message() {
@@ -29,7 +30,13 @@ class Message {
           <>
             <Chip
               size="small"
-              avatar={<Avatar src="/" />}
+              avatar={
+                <Avatar
+                  src="/"
+                  sx={{ bgcolor: this._color, color: "#ffff" }}
+                  alt={this._username}
+                />
+              }
               label={this._username.toLowerCase()}
               sx={{
                 bgcolor: "transparent",

@@ -1,12 +1,26 @@
 import VirtualSpaceWidget from "../widgets/virtual-space";
 import { useSearchParams } from "react-router-dom";
-import { useState } from "react";
+import { useMemo } from "react";
+import VirtualSpaceClass from "../classes/virtual-space";
 
 export default function VirtualSpace() {
   const [searchParams] = useSearchParams();
-  const [id] = useState(searchParams.get("id"));
+  const virtualSpace = useMemo(
+    () => new VirtualSpaceClass(searchParams.get("id"), {}),
+    // eslint-disable-next-line
+    [searchParams.get("id")]
+  );
+  const socket = useMemo(
+    () => virtualSpace.connect({}),
+    // eslint-disable-next-line
+    [virtualSpace]
+  );
 
-  // On mobile it is sometimes way down at the bottom of the page
-
-  return <VirtualSpaceWidget virtual_room_id={id} />;
+  return (
+    <>
+      {socket && (
+        <VirtualSpaceWidget virtualSpace={virtualSpace} socket={socket} />
+      )}
+    </>
+  );
 }

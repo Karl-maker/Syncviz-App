@@ -3,13 +3,23 @@ import { useTheme } from "@mui/material/styles";
 import { RiShareFill } from "react-icons/ri";
 import { MdOutlineContentCopy } from "react-icons/md";
 import DialogButton from "../../template/buttons/dialog";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import copyText from "../../utils/others/clipboard";
+import { VirtualSpaceContext } from "../../widgets/virtual-space";
+import PAGES from "../../utils/constants/page-names";
 
 export default function Share() {
+  const { virtualSpace } = useContext(VirtualSpaceContext);
   const [open, toggleOpen] = useState(false);
   const theme = useTheme();
   const clipboard = useRef();
+
+  const createLink = (href) => {
+    return href.replace(
+      PAGES.CREATE_METAVERSE,
+      `${PAGES.METAVERSE_ROOM}/?id=${virtualSpace.id}`
+    );
+  };
 
   return (
     <>
@@ -30,7 +40,11 @@ export default function Share() {
               <input
                 readOnly
                 ref={clipboard}
-                value={window.location.href}
+                value={
+                  virtualSpace.manage
+                    ? createLink(window.location.href)
+                    : window.location.href
+                }
                 style={{
                   fontSize: "15px",
                   outline: "none",
@@ -55,11 +69,7 @@ export default function Share() {
         open={open}
         setOpen={toggleOpen}
         actions={
-          <Button
-            variant="filled"
-            onClick={() => toggleOpen(false)}
-            sx={{ color: "text.tertiary" }}
-          >
+          <Button variant="filled" onClick={() => toggleOpen(false)}>
             Cancel
           </Button>
         }

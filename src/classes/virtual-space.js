@@ -1,18 +1,21 @@
 import { io } from "socket.io-client";
 import ChatRoom from "./chat-room";
+import User from "./user";
+import config from "../config";
 
-const BACKEND = "192.168.0.5:5000";
+const BACKEND = config.API.LIVE_SERVER;
 
 class VirtualSpace {
   constructor(id, { attendee, name, description }) {
     this._id = id || null;
-    this._name = name || "";
     this._description = description || "";
     this._attendee = attendee || { username: "Karl-Johan" };
     this._socket = null;
     this._init = false;
-
+    this._manage = false;
     this._chat_room = null;
+    this._time_limit = 0;
+    this._host = new User("", "");
   }
 
   get id() {
@@ -31,12 +34,12 @@ class VirtualSpace {
     this._socket = socket;
   }
 
-  get name() {
-    return this._name;
+  get host() {
+    return this._host;
   }
 
-  set name(name) {
-    this._name = name;
+  set host({ username, theme }) {
+    this._host = new User(username, theme);
   }
 
   get description() {
@@ -45,6 +48,22 @@ class VirtualSpace {
 
   set description(description) {
     this._description = description;
+  }
+
+  get manage() {
+    return this._manage;
+  }
+
+  set manage(manage) {
+    this._manage = manage;
+  }
+
+  get time_limit() {
+    return this._time_limit;
+  }
+
+  set time_limit(time_limit) {
+    this._time_limit = time_limit;
   }
 
   get chat_room() {
@@ -57,13 +76,13 @@ class VirtualSpace {
 
   // Methods
 
-  connect() {
+  connect({ id }) {
     try {
       this._socket = io.connect(`ws://${BACKEND}/virtual-space`, {
-        reconnection: true,
-        reconnectionDelay: 1000,
-        reconnectionDelayMax: 5000,
-        reconnectionAttempts: 99999,
+        // reconnection: true,
+        // reconnectionDelay: 1000,
+        // reconnectionDelayMax: 5000,
+        // reconnectionAttempts: 99999,
         extraHeaders: {
           Authorization: `{ "username": "${this._attendee.username}" }`,
         },
@@ -93,11 +112,16 @@ class VirtualSpace {
     this._socket.emit("join", { place_holder: "joining..." });
   }
 
+  end() {
+    this._socket.emit("delete", { placeholder: "ending" });
+  }
+
   create() {
     this._socket.emit("create", {
-      name: this._name,
       description: this._description,
     });
+
+    this._manage = true;
   }
 
   sendBlob(data) {

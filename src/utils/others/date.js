@@ -25,3 +25,29 @@ function formatDate(date) {
     date.getFullYear(),
   ].join("/");
 }
+
+export function countTimeLeft(start, time_limit) {
+  const end = new Date(start + time_limit * 6000);
+  const current = new Date();
+
+  const minutes = parseInt(
+    time_limit - Math.abs(end.getTime() - current.getTime()) / (1000 * 60)
+  );
+  const seconds = parseInt(
+    60 - ((Math.abs(end.getTime() - current.getTime()) / 1000) % 60)
+  );
+
+  return (
+    <>
+      {!isNaN(minutes) && (
+        <>
+          {minutes > 0 ? (
+            <>{`${minutes}:${seconds < 10 ? 0 : ""}${seconds}`}</>
+          ) : (
+            <>FINISHED</>
+          )}
+        </>
+      )}
+    </>
+  );
+}

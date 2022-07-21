@@ -1,21 +1,11 @@
-import { useState, createContext, useEffect } from "react";
-import VirtualSpace from "../classes/virtual-space";
+import { createContext, useEffect } from "react";
 import ManageVirtualSpace from "../components/manage-virtual-space";
 import VirtualSpaceComponent from "../components/virtual-space";
 
 export const VirtualSpaceContext = createContext({});
 
-export default function VirtualSpaceWidget({
-  virtual_room_id,
-  manage,
-  attributes,
-}) {
+export default function VirtualSpaceWidget({ manage, socket, virtualSpace }) {
   // This will create instance and share with all components
-
-  const [virtualSpace] = useState(
-    new VirtualSpace(virtual_room_id || null, attributes || {})
-  );
-  const [socket] = useState(virtualSpace.connect()); // ONLY for listeners, all actions on from class
 
   useEffect(() => {
     socket.on("connect", () => {

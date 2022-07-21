@@ -65,6 +65,7 @@ export default function ChatRoomComponent({ display, toggleDisplay }) {
     socket.on("messages", ({ message, sender, timestamp }) => {
       const new_message = new Message(message, {
         username: sender.username,
+        color: sender.color,
         timestamp,
       });
       addMessage(new_message);

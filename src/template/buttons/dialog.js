@@ -4,16 +4,22 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Paper from "@mui/material/Paper";
+import { useTheme } from "@mui/material/styles";
 
 function PaperComponent(props) {
+  const theme = useTheme();
   return (
     <div>
-      <Paper {...props} />
+      <Paper
+        sx={{ bgcolor: theme.palette.mode === "dark" ? "" : "text.tertiary" }}
+        {...props}
+      />
     </div>
   );
 }
 
 export default function DialogButton({
+  noClickOff,
   children,
   title,
   content,
@@ -25,7 +31,7 @@ export default function DialogButton({
   sx,
 }) {
   const handleClose = () => {
-    setOpen(false);
+    setOpen(!noClickOff ? false : true);
   };
 
   return (
@@ -37,12 +43,12 @@ export default function DialogButton({
         PaperComponent={PaperComponent}
         aria-labelledby="delete-alert"
       >
-        <DialogTitle sx={{ color: "text.tertiary" }}>{title}</DialogTitle>
+        <DialogTitle sx={{ color: "text.primary" }}>{title}</DialogTitle>
         <DialogContent>
           {element ? (
             element
           ) : (
-            <DialogContentText sx={{ color: "text.tertiary" }}>
+            <DialogContentText sx={{ color: "text.primary" }}>
               {content}
             </DialogContentText>
           )}
