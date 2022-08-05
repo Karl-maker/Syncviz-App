@@ -1,4 +1,4 @@
-import { Chip, Avatar, Divider, Typography } from "@mui/material";
+import { Chip, Avatar, Typography } from "@mui/material";
 
 class Message {
   constructor(message, { timestamp, username, color }) {
@@ -18,48 +18,58 @@ class Message {
 
   display() {
     return (
-      <Chip
-        sx={{
-          height: "auto",
-          padding: "0px",
-          paddingTop: "5px",
-          paddingRight: "5px",
-          alignContent: "start",
-        }}
-        label={
-          <>
-            <Chip
-              size="small"
-              avatar={
-                <Avatar
-                  src="/"
-                  sx={{ bgcolor: this._color, color: "#ffff" }}
-                  alt={this._username}
-                />
-              }
-              label={this._username.toLowerCase()}
-              sx={{
-                bgcolor: "transparent",
-                height: "auto",
-                marginBottom: "5px",
-              }}
-            />
-            <Divider />
-            <Typography
-              variant="caption"
-              display="block"
-              gutterBottom
-              sx={{
-                width: "100%",
-                display: "inline-block",
-                whiteSpace: "pre-line",
-              }}
-            >
-              {this._message}
-            </Typography>
-          </>
-        }
-      />
+      <div style={{ display: "flex" }}>
+        <Avatar
+          sizes="small"
+          src="/"
+          sx={{
+            width: 30,
+            height: 30,
+            bgcolor: this._color,
+            color: "#ffff",
+            marginRight: "5px",
+          }}
+          alt={this._username}
+        />
+        <Chip
+          sx={{
+            height: "auto",
+            padding: "0px",
+            paddingTop: "5px",
+            paddingRight: "5px",
+            alignContent: "start",
+          }}
+          label={
+            <>
+              {/*<Chip
+                size="small"
+                label={this._username.toLowerCase()}
+                sx={{
+                  bgcolor: "transparent",
+                  height: "auto",
+                  marginBottom: "2px",
+                }}
+              />*/}
+              <Typography variant="caption" sx={{ fontSize: "10px" }}>
+                {this._username}
+              </Typography>
+              <br />
+              <Typography
+                variant="caption"
+                display="block"
+                gutterBottom
+                sx={{
+                  width: "100%",
+                  display: "inline-block",
+                  whiteSpace: "pre-line",
+                }}
+              >
+                {this._message}
+              </Typography>
+            </>
+          }
+        />
+      </div>
     );
   }
 

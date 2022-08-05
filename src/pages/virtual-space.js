@@ -1,12 +1,14 @@
 import VirtualSpaceWidget from "../widgets/virtual-space";
 import { useSearchParams } from "react-router-dom";
-import { useMemo } from "react";
+import { useMemo, useContext } from "react";
+import { UserAccountContext } from "../context/user";
 import VirtualSpaceClass from "../classes/virtual-space";
 
 export default function VirtualSpace() {
   const [searchParams] = useSearchParams();
+  const { user } = useContext(UserAccountContext);
   const virtualSpace = useMemo(
-    () => new VirtualSpaceClass(searchParams.get("id"), {}),
+    () => new VirtualSpaceClass(searchParams.get("id"), { attendee: user }),
     // eslint-disable-next-line
     [searchParams.get("id")]
   );

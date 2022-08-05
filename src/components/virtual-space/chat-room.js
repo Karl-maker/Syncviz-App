@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
 import Share from "./share";
+import { MdOutlineFullscreen, MdOutlineFullscreenExit } from "react-icons/md";
 import { BiSend } from "react-icons/bi";
 import { RiMessage2Fill } from "react-icons/ri";
 import { VirtualSpaceContext } from "../../widgets/virtual-space";
@@ -17,7 +18,11 @@ import useDidMountEffect from "../../utils/hooks/useDidMountEffect";
 import MEDIA from "../../utils/constants/media";
 import BlobMessage from "../../classes/blob-message";
 
-export default function ChatRoomComponent({ display, toggleDisplay }) {
+export default function ChatRoomComponent({
+  display,
+  toggleDisplay,
+  handleFullScreen,
+}) {
   const mobile = useMediaQuery(MEDIA.MOBILE_MAX);
   const { socket, virtualSpace } = useContext(VirtualSpaceContext);
   const [messages, setMessages] = useState(<></>);
@@ -42,8 +47,8 @@ export default function ChatRoomComponent({ display, toggleDisplay }) {
   }, [socket]);
 
   useEffect(() => {
-    socket.on("alerts", ({ message }) => {
-      const alert = new Alert(message, {});
+    socket.on("alerts", ({ message, type }) => {
+      const alert = new Alert(message, { type });
       addMessage(alert);
     });
 
@@ -93,7 +98,7 @@ export default function ChatRoomComponent({ display, toggleDisplay }) {
       <ol
         style={{
           padding: "0px",
-          height: mobile ? "82%" : "75%",
+          height: mobile ? "84%" : !handleFullScreen.active ? "80%" : "90%",
           opacity: display ? 1 : 0,
           display: "flex",
           visibility: display ? "" : "hidden",
@@ -159,7 +164,24 @@ export default function ChatRoomComponent({ display, toggleDisplay }) {
           </Badge>
         </IconButton>
 
-        <Share />
+        {!handleFullScreen.active && <Share />}
+
+        {!mobile && (
+          <IconButton
+            sx={{ marginTop: "10px" }}
+            onClick={
+              !handleFullScreen.active
+                ? handleFullScreen.enter
+                : handleFullScreen.exit
+            }
+          >
+            {!handleFullScreen.active ? (
+              <MdOutlineFullscreen style={{ fontSize: "27px" }} />
+            ) : (
+              <MdOutlineFullscreenExit style={{ fontSize: "27px" }} />
+            )}
+          </IconButton>
+        )}
       </div>
     </div>
   );

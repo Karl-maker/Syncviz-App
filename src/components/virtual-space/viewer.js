@@ -1,17 +1,20 @@
 import ChatRoomComponent from "./chat-room";
 import Timer from "./timer";
-import { useState, useEffect, useContext } from "react";
+import { FullScreen, useFullScreenHandle } from "react-full-screen";
+import { useState, useEffect, useContext, useMemo } from "react";
 import { VirtualSpaceContext } from "../../widgets/virtual-space";
-import { Button, IconButton, useMediaQuery } from "@mui/material";
+import { IconButton, useMediaQuery } from "@mui/material";
 import { BiLinkAlt } from "react-icons/bi";
-import DialogButton from "../../template/buttons/dialog";
 import ThreeDimentionalViewer from "./babylon-viewer";
 import MEDIA from "../../utils/constants/media";
+import ViewersChip from "./viewers-chip";
+
+// Meshes: https://github.com/BabylonJS/Assets/tree/master/meshes
 
 export default function Viewer() {
+  const handleFullScreen = useFullScreenHandle();
   const { socket, virtualSpace } = useContext(VirtualSpaceContext);
   const [connectionStatus, setConnectionStatus] = useState(false);
-  const [connectDialog, setConnectDialog] = useState(false);
   const [displayTimer, setDisplayTimer] = useState(false);
   const [displayChat, toggleDisplayChat] = useState(false);
   const mobile = useMediaQuery(MEDIA.MOBILE_MAX);
@@ -21,13 +24,7 @@ export default function Viewer() {
       // Allow user to attempt to rejoin
       setDisplayTimer(false);
       setConnectionStatus(
-        <IconButton
-          sx={{ bgcolor: "#d63031" }}
-          size="small"
-          onClick={() => {
-            setConnectDialog(true);
-          }}
-        >
+        <IconButton sx={{ bgcolor: "#d63031", marginLeft: "5px" }} size="small">
           <BiLinkAlt />
         </IconButton>
       );
@@ -39,7 +36,7 @@ export default function Viewer() {
     socket.on("connect", () => {
       setDisplayTimer(true);
       setConnectionStatus(
-        <IconButton size="small" sx={{ bgcolor: "#00b894" }}>
+        <IconButton size="small" sx={{ bgcolor: "#00b894", marginLeft: "5px" }}>
           <BiLinkAlt />
         </IconButton>
       );
@@ -50,110 +47,117 @@ export default function Viewer() {
   useEffect(() => {
     socket.on("reconnect", () => {
       setConnectionStatus(
-        <IconButton size="small" sx={{ bgcolor: "#fdcb6e" }}>
+        <IconButton size="small" sx={{ bgcolor: "#fdcb6e", marginLeft: "5px" }}>
           <BiLinkAlt />
         </IconButton>
       );
     });
   }, [socket]);
 
-  return (
-    <div
-      style={{
-        position: "relative",
-        margin: mobile ? "5px" : "0px",
-        padding: "0px",
-        width: "auto",
-      }}
-    >
-      {
-        // 3D View
-      }
-
-      <ThreeDimentionalViewer
-        modelUrl={"https://assets.babylonjs.com/meshes/"}
-      />
-
-      {
-        // Overlay Content
-      }
-      {
-        // Timer
-      }
-      <div
-        style={{
-          position: "absolute",
-          zIndex: 10,
-          top: "0%",
-          right: "0%",
-          marginRight: "20px",
-          marginTop: "15px",
-        }}
-      >
-        <Timer on={displayTimer} />
-      </div>
-      {
-        // Message
-      }
-
-      <div
-        style={{
-          position: "absolute",
-          zIndex: 10,
-          top: "0%",
-          left: "0%",
-          marginLeft: "25px",
-          height: "100%",
-          width: displayChat ? "65%" : "0%",
-        }}
-      >
-        <ChatRoomComponent
-          display={displayChat}
-          toggleDisplay={toggleDisplayChat}
+  const BabylonViewer = useMemo(
+    () =>
+      virtualSpace.url ? (
+        <ThreeDimentionalViewer
+          fullScreen={handleFullScreen.active}
+          modelUrl={virtualSpace.url}
         />
-      </div>
-      {
-        // Fullscreen
-      }
+      ) : (
+        <></>
+      ),
+    [handleFullScreen.active, virtualSpace.url]
+  );
+
+  return (
+    <FullScreen handle={handleFullScreen}>
       <div
         style={{
-          position: "absolute",
-          zIndex: 20,
-          top: "0%",
-          left: "0%",
-          marginLeft: "15px",
-          marginTop: "15px",
+          position: "relative",
+          margin: mobile ? "5px" : "0px",
+          padding: "0px",
+          width: "auto",
+          height: handleFullScreen.active ? "100vh" : mobile ? "65vh" : "60vh",
         }}
       >
-        {connectionStatus && connectionStatus}
-      </div>
-
-      {
-        // Dialogs
-      }
-
-      <DialogButton
-        title="Join Virtual Space"
-        content="You can attempt to join this virtual space, however if this virtual space has ended you will be unsuccessfull."
-        open={connectDialog}
-        setOpen={setConnectDialog}
-        actions={
-          <>
-            <Button
-              variant="filled"
-              onClick={() => {
-                virtualSpace.join();
-                setConnectDialog(false);
-              }}
-            >
-              Join
-            </Button>
-            <Button variant="filled" onClick={() => setConnectDialog(false)}>
-              Cancel
-            </Button>
-          </>
+        {
+          // 3D View
         }
-      />
-    </div>
+
+        {BabylonViewer}
+
+        {
+          // Overlay Content
+        }
+        {
+          // Timer
+        }
+        <div
+          style={{
+            position: "absolute",
+            zIndex: 10,
+            top: "0%",
+            right: "0%",
+            marginRight: "20px",
+            marginTop: "15px",
+          }}
+        >
+          <Timer on={displayTimer} /> {connectionStatus && connectionStatus}
+        </div>
+        {
+          // Message
+        }
+
+        <div
+          style={{
+            position: "absolute",
+            zIndex: 10,
+            top: "0%",
+            left: "0%",
+            marginLeft: "25px",
+            height: "100%",
+            width: displayChat ? "65%" : "0%",
+          }}
+        >
+          <ChatRoomComponent
+            display={displayChat}
+            toggleDisplay={toggleDisplayChat}
+            handleFullScreen={handleFullScreen}
+          />
+        </div>
+        {
+          // Host
+        }
+        <div
+          style={{
+            position: "absolute",
+            zIndex: 20,
+            top: "0%",
+            left: "0%",
+            marginLeft: "15px",
+            marginTop: "15px",
+          }}
+        >
+          {virtualSpace.host.display({ backgroundColor: "transparent" })}
+        </div>
+        {
+          // Viewers
+        }
+        <div
+          style={{
+            position: "absolute",
+            zIndex: 10,
+            bottom: "0%",
+            right: "0%",
+            marginRight: "20px",
+            marginBottom: "20px",
+          }}
+        >
+          {!mobile && <ViewersChip />}
+        </div>
+
+        {
+          // Dialogs
+        }
+      </div>
+    </FullScreen>
   );
 }

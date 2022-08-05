@@ -51,3 +51,35 @@ export function countTimeLeft(start, time_limit) {
     </>
   );
 }
+
+export function countDownTimer(start, timeleft) {
+  const countDownDate = new Date(
+    new Date(start).getTime() + timeleft * 60000
+  ).getTime();
+
+  // Get todays date and time
+  let now = new Date().getTime();
+
+  // Find the distance between now an the count down date
+  let distance = countDownDate - now;
+
+  // Time calculations for days, hours, minutes and seconds
+  //let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  let minutes = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60)); /// (1000 * 60)
+  let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // Output the result in an element with id="demo"
+  return (
+    <>
+      {!isNaN(minutes) && (
+        <>
+          {minutes > 0 ? (
+            <>{`${minutes}:${seconds < 10 ? 0 : ""}${seconds}`}</>
+          ) : (
+            <>FINISHED</>
+          )}
+        </>
+      )}
+    </>
+  );
+}

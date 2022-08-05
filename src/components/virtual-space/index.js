@@ -1,10 +1,12 @@
-import { Typography, Box, Grid, Skeleton, Chip } from "@mui/material";
+import { Typography, Box, Grid, Skeleton } from "@mui/material";
 import { useEffect, useContext, useState } from "react";
 import { VirtualSpaceContext } from "../../widgets/virtual-space";
+import { UserAccountContext } from "../../context/user";
 import ViewersChip from "./viewers-chip";
 import Viewer from "./viewer";
 
 export default function VirtualSpaceComponent() {
+  const { user, save } = useContext(UserAccountContext);
   const { socket, virtualSpace } = useContext(VirtualSpaceContext);
   const [context, setContext] = useState({
     name: "",
@@ -14,7 +16,7 @@ export default function VirtualSpaceComponent() {
 
   useEffect(() => {
     socket.on("attributes", ({ virtual_space }) => {
-      const { _id, name, description, createdAt, time_limit, user } =
+      const { _id, name, description, createdAt, time_limit, user, url } =
         virtual_space;
 
       virtualSpace.id = _id;
@@ -23,12 +25,21 @@ export default function VirtualSpaceComponent() {
       virtualSpace.time_limit = time_limit;
       virtualSpace.createdAt = createdAt;
       virtualSpace.host = user;
+      virtualSpace.url = url;
 
       setContext({ name, description, createdAt });
     });
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
+
+  useEffect(() => {
+    virtualSpace.attendee.username = user.username;
+    virtualSpace.attendee.theme = user.theme;
+    virtualSpace.updateUser();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [save]);
 
   return (
     <Box sx={{ width: "100%", padding: "5px", margin: "0px", height: "100%" }}>
@@ -73,23 +84,16 @@ export default function VirtualSpaceComponent() {
         spacing={2}
         sx={{ marginTop: "10px", paddingLeft: "5px", paddingRight: "5px" }}
       >
-        <Grid item xs={4}>
+        <Grid item xs={6}>
           {
             // Current Viewers List
           }
-          <ViewersChip />
+          <ViewersChip showAvatars />
         </Grid>
-        <Grid item xs={8} sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <Grid item xs={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
           {
             // Date of creation
           }
-          <Chip
-            label={
-              <>
-                {virtualSpace.host.display({ backgroundColor: "transparent" })}
-              </>
-            }
-          />
         </Grid>
       </Grid>
     </Box>

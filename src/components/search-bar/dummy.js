@@ -27,12 +27,7 @@ export default function SearchDummy() {
           bgcolor: "transparent",
         }}
       />
-      <DialogButton
-        setOpen={setOpen}
-        open={open}
-        title={<SearchBar />}
-        content="Search within Syncverse's Metaverse"
-      />
+      <DialogButton setOpen={setOpen} open={open} content={<SearchBar />} />
     </>
   );
 }

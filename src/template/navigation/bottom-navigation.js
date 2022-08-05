@@ -5,8 +5,6 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { IoIosAdd } from "react-icons/io";
-import { RiEarthFill } from "react-icons/ri";
-import { FaInfo } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import PAGES from "../../utils/constants/page-names";
 
@@ -26,14 +24,6 @@ export default function BottomNavigationBar() {
         setValue(newValue);
       }}
     >
-      <BottomNavigationAction
-        icon={
-          <RiEarthFill
-            size={25}
-            onClick={() => navigate(PAGES.METAVERSE_FEED)}
-          />
-        }
-      />
       <BottomNavigationAction
         disableRipple
         icon={
@@ -57,15 +47,6 @@ export default function BottomNavigationBar() {
           >
             <IoIosAdd size={25} />
           </Button>
-        }
-      />
-      <BottomNavigationAction
-        icon={
-          <FaInfo
-            size={20}
-            onClick={() => navigate(PAGES.HELP)}
-            elevation={0}
-          />
         }
       />
     </BottomNavigation>

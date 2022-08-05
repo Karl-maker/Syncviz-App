@@ -41,6 +41,23 @@ class User {
       />
     );
   }
+
+  avatar({ size, sx, action }) {
+    return (
+      <Avatar
+        onClick={action}
+        src="/"
+        sx={{
+          ...sx,
+          bgcolor: this._theme,
+          color: "#ffff",
+          height: size,
+          width: size,
+        }}
+        alt={this._username}
+      />
+    );
+  }
 }
 
 export default User;

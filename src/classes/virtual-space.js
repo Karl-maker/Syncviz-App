@@ -6,16 +6,17 @@ import config from "../config";
 const BACKEND = config.API.LIVE_SERVER;
 
 class VirtualSpace {
-  constructor(id, { attendee, name, description }) {
+  constructor(id, { attendee, name, description, url }) {
     this._id = id || null;
     this._description = description || "";
-    this._attendee = attendee || { username: "Karl-Johan" };
+    this._attendee = attendee || { username: "Guest" };
     this._socket = null;
     this._init = false;
     this._manage = false;
     this._chat_room = null;
     this._time_limit = 0;
     this._host = new User("", "");
+    this._url = url;
   }
 
   get id() {
@@ -34,12 +35,28 @@ class VirtualSpace {
     this._socket = socket;
   }
 
+  get url() {
+    return this._url;
+  }
+
+  set url(url) {
+    this._url = url;
+  }
+
   get host() {
     return this._host;
   }
 
   set host({ username, theme }) {
     this._host = new User(username, theme);
+  }
+
+  get attendee() {
+    return this._attendee;
+  }
+
+  set attendee(attenddee) {
+    this._attendee = attenddee;
   }
 
   get description() {
@@ -84,7 +101,7 @@ class VirtualSpace {
         // reconnectionDelayMax: 5000,
         // reconnectionAttempts: 99999,
         extraHeaders: {
-          Authorization: `{ "username": "${this._attendee.username}" }`,
+          Authorization: `{ "username": "${this._attendee.username}", "theme": "${this._attendee.theme}" }`,
         },
         query: { virtual_space_id: this._id || null },
       });
@@ -124,12 +141,15 @@ class VirtualSpace {
     this._manage = true;
   }
 
-  sendBlob(data) {
-    this._socket.emit("send-blob", data);
+  updateUser() {
+    this._socket.emit("update-user", {
+      username: this._attendee.username,
+      theme: this._attendee.theme,
+    });
   }
 
-  sendDirectBlob(user_id) {
-    this._socket.emit("send-direct-blob", { user_id });
+  updateAttributes({ description }) {
+    this._socket.emit("attributes", { description });
   }
 }
 

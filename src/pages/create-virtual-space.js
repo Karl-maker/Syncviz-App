@@ -1,7 +1,8 @@
 import VirtualSpaceWidget from "../widgets/virtual-space";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useContext } from "react";
+import { Backdrop, CircularProgress } from "@mui/material";
 import VirtualSpaceClass from "../classes/virtual-space";
-import SetupVirtualSpace from "../components/setup-virtual-room";
+import { UserAccountContext } from "../context/user";
 
 export default function CreateVirtualSpace() {
   // Create Space On Site
@@ -13,8 +14,7 @@ export default function CreateVirtualSpace() {
   */
 
   const [live, goLive] = useState(false);
-  const [setup, setSetup] = useState(true);
-  const [attributes, setAttributes] = useState({ description: "" });
+  const { user } = useContext(UserAccountContext);
 
   /*
 
@@ -24,36 +24,42 @@ export default function CreateVirtualSpace() {
   */
 
   const virtualSpace = useMemo(() => {
-    if (attributes.description) {
-      let vs = new VirtualSpaceClass(null, {
-        description: attributes.description,
-      });
+    let vs = new VirtualSpaceClass(null, {
+      description: "Welcome to my Metaverse Room!",
+      attendee: user,
+    });
 
-      goLive(true);
+    return vs;
 
-      return vs;
-    } else {
-      return null;
-    }
     // eslint-disable-next-line
-  }, [setup]);
+  }, []);
+
+  const socket = useMemo(() => {
+    let io = virtualSpace.connect({});
+
+    goLive(true);
+
+    return io;
+
+    // eslint-disable-next-line
+  }, [virtualSpace]);
 
   return (
     <>
       {live ? (
         <VirtualSpaceWidget
           manage={true}
-          socket={virtualSpace.connect({})}
+          socket={socket}
           virtualSpace={virtualSpace}
         />
       ) : (
-        <SetupVirtualSpace
-          key="setup-virtual-space"
-          setSetup={setSetup}
-          setup={setup}
-          attributes={attributes}
-          setAttributes={setAttributes}
-        />
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={!live}
+          onClick={() => {}}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
       )}
     </>
   );

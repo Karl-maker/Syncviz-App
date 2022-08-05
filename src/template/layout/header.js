@@ -6,10 +6,16 @@ import MEDIA from "../../utils/constants/media";
 import SearchBar from "../../components/search-bar/dummy";
 import PAGE from "../../utils/constants/page-names";
 import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { UserAccountContext } from "../../context/user";
+import EditUsername from "../../components/user-account/edit-username";
+import synclogo from "../../images/logo192.png";
 
 export default function Header() {
+  const [userDialog, setUserDialog] = useState(false);
   const mobile = useMediaQuery(MEDIA.MOBILE_MAX);
   const navigation = useNavigate();
+  const { user } = useContext(UserAccountContext);
 
   return (
     <Grid
@@ -43,7 +49,7 @@ export default function Header() {
         }}
       >
         <img
-          src="./logo192.png"
+          src={synclogo}
           alt="syncviz-logo"
           height={mobile ? 70 : 80}
           onClick={() => navigation(PAGE.METAVERSE_FEED)}
@@ -56,12 +62,21 @@ export default function Header() {
         md={2}
         lg={2}
         display={{ xs: "block", sm: "block", md: "block", lg: "block" }}
-        sx={{ display: "flex", justifyContent: "flex-end" }}
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
       >
         {
           // Search Bar
         }
         <SearchBar />
+        {user.avatar({
+          size: 25,
+          sx: { marginLeft: "10px" },
+          action: () => setUserDialog(true),
+        })}
       </Grid>
       <Grid
         item
@@ -107,6 +122,10 @@ export default function Header() {
           // White space
         }
       </Grid>
+      {
+        // Other Stuff
+      }
+      <EditUsername open={userDialog} setOpen={setUserDialog} />
     </Grid>
   );
 }

@@ -17,7 +17,7 @@ export default function VirtualSpaceWidget({ manage, socket, virtualSpace }) {
     });
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [socket]);
+  }, []);
 
   // Join as soon as rendered
 

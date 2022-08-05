@@ -1,8 +1,9 @@
-import { Typography, Chip, Avatar, AvatarGroup } from "@mui/material";
+import { Typography, Chip } from "@mui/material";
 import { useEffect, useState, useContext } from "react";
+import { VscEye } from "react-icons/vsc";
 import { VirtualSpaceContext } from "../../widgets/virtual-space";
 
-export default function ViewersChip() {
+export default function ViewersChip({ showAvatars }) {
   const { socket } = useContext(VirtualSpaceContext);
   const [context, setContext] = useState([]);
 
@@ -17,26 +18,18 @@ export default function ViewersChip() {
   return (
     <Chip
       variant="outlined"
-      icon={
-        <AvatarGroup max={4}>
-          {context.map((user, index) => (
-            <Avatar
-              key={index}
-              alt={user.username ? user.username.toUpperCase() : "Guest"}
-              sx={{ bgcolor: user.color }}
-              src="/"
-            />
-          ))}
-        </AvatarGroup>
-      }
       label={
         <Typography
           variant="caption"
           display="block"
           gutterBottom
-          sx={{ color: "text.secondary" }}
+          sx={{
+            color: "text.secondary",
+            alignItems: "center",
+            display: "flex",
+          }}
         >
-          {`${context.length} viewers`}
+          <>{context.length}</> <VscEye style={{ marginLeft: "5px" }} />
         </Typography>
       }
       sx={{

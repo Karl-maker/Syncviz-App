@@ -6,20 +6,23 @@ import { useTheme } from "@mui/material/styles";
 import SceneBabylon from "../../classes/babylon/scene";
 
 export default function BabylonViewer(props) {
+  let babylonScene;
   const theme = useTheme();
   const mobile = useMediaQuery(MEDIA.MOBILE_MAX);
   const reactCanvas = useRef(null);
   const {
     modelUrl,
+    meshName,
     antialias,
     engineOptions,
     adaptToDeviceRatio,
     sceneOptions,
+    fullScreen,
     ...rest
   } = props;
 
   const onSceneReady = async (scene) => {
-    const babylonScene = new SceneBabylon({ scene });
+    babylonScene = new SceneBabylon({ scene });
 
     babylonScene.scene.clearColor = new BABYLON.Color4(
       0,
@@ -28,9 +31,11 @@ export default function BabylonViewer(props) {
       0.0000000000000001
     );
 
-    babylonScene.loadScene(modelUrl);
+    babylonScene.initializeCamera({ mobile });
+    await babylonScene.loadScene(modelUrl);
 
     // This attaches the camera to the canvas
+
     babylonScene.scene.activeCamera.attachControl(babylonScene.canvas, true);
   };
 
@@ -75,16 +80,16 @@ export default function BabylonViewer(props) {
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reactCanvas]);
+  }, [reactCanvas, fullScreen]);
 
   return (
     <canvas
       ref={reactCanvas}
       style={{
         zIndex: 10000,
-        borderRadius: mobile ? "2em" : "2em",
+        borderRadius: fullScreen ? "0em" : "2em",
         backgroundColor: theme.palette.mode === "dark" ? "#34495e" : "#ecf0f1",
-        height: mobile ? "60vh" : "50vh",
+        height: "100%",
         width: mobile ? "100%" : "100%",
         overflow: "hidden",
         margin: mobile ? "0px" : "0px",

@@ -3,15 +3,19 @@ import Message from "./message";
 import { IoIosAlert } from "react-icons/io";
 
 class Alert extends Message {
-  constructor(message, { timestamp }) {
+  constructor(message, { timestamp, type }) {
     super(message, { timestamp });
+    this._type = type || "alert";
   }
 
   display() {
     return (
       <Chip
-        sx={{ bgcolor: "#d63031", color: "#fff" }}
-        avatar={<IoIosAlert color="#fff" />}
+        sx={{
+          bgcolor: this._type === "info" ? "" : "#d63031",
+          color: this._type === "info" ? "" : "#fff",
+        }}
+        avatar={<IoIosAlert color={this._type === "info" ? "" : "#fff"} />}
         label={
           <Typography
             variant="caption"

@@ -4,29 +4,34 @@ import {
   SpeedDialIcon,
   SpeedDialAction,
   useMediaQuery,
-  Typography,
-  Button,
 } from "@mui/material";
-//import { styled } from "@mui/material/styles";
 import { BiLogOut } from "react-icons/bi";
+import { IoOptions } from "react-icons/io5";
 import { useState, useContext } from "react";
-import DialogButton from "../../template/buttons/dialog";
 import MEDIA from "../../utils/constants/media";
-import { useNavigate } from "react-router-dom";
+import EndMetaverseRoom from "./end";
+import Attributes from "./attributes";
 
 export default function ManageVirtualSpace() {
   // Have Virtual Room there WITH snackbar
-  const { virtualSpace } = useContext(VirtualSpaceContext);
-  const navigate = useNavigate();
-  const [endMetaverseRoomDialog, toggleEndMetaverseRoomDialog] =
-    useState(false);
-  //const [blob, setBlob] = useState(null);
   const mobile = useMediaQuery(MEDIA.MOBILE_MAX);
+  const { virtualSpace } = useContext(VirtualSpaceContext);
+
+  // Dialog Triggers
+  const [endDialog, toggleEndDialog] = useState(false);
+  const [attributesDialog, toggleAttributesDialog] = useState(false);
+
+  // Options
   const actions = [
     {
       name: "End Metaverse Room",
       icon: <BiLogOut color="#fff" />,
-      action: () => toggleEndMetaverseRoomDialog(true),
+      action: () => toggleEndDialog(true),
+    },
+    {
+      name: "Edit attributes",
+      icon: <IoOptions color="#fff" />,
+      action: () => toggleAttributesDialog(true),
     },
   ];
 
@@ -50,32 +55,18 @@ export default function ManageVirtualSpace() {
           />
         ))}
       </SpeedDial>
-      <DialogButton
-        title="End Metaverse Room"
-        content={
-          <Typography>This will end room for all other users</Typography>
-        }
-        open={endMetaverseRoomDialog}
-        setOpen={toggleEndMetaverseRoomDialog}
-        actions={
-          <>
-            <Button
-              variant="filled"
-              onClick={() => {
-                virtualSpace.end();
-                navigate(0);
-              }}
-            >
-              End
-            </Button>
-            <Button
-              variant="filled"
-              onClick={() => toggleEndMetaverseRoomDialog(false)}
-            >
-              Cancel
-            </Button>
-          </>
-        }
+      {
+        // Options Dialogs
+      }
+      <EndMetaverseRoom
+        virtualSpace={virtualSpace}
+        setOpen={toggleEndDialog}
+        open={endDialog}
+      />
+      <Attributes
+        virtualSpace={virtualSpace}
+        setOpen={toggleAttributesDialog}
+        open={attributesDialog}
       />
     </>
   );

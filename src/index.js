@@ -9,6 +9,7 @@ import Layout from "./template/layout";
 import { BrowserRouter as Router } from "react-router-dom";
 import StyleProvider from "./template/theme/provider";
 import { SearchContextProvider } from "./context/search";
+import { UserContextProvider } from "./context/user";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -18,15 +19,17 @@ root.render(
     }
 
     <StyleProvider>
-      <SearchContextProvider>
-        <CssBaseline />
-        {
-          // Provide Theme
-        }
-        <Layout>
-          <PageNavigation />
-        </Layout>
-      </SearchContextProvider>
+      <UserContextProvider>
+        <SearchContextProvider>
+          <CssBaseline />
+          {
+            // Provide Theme
+          }
+          <Layout>
+            <PageNavigation />
+          </Layout>
+        </SearchContextProvider>
+      </UserContextProvider>
     </StyleProvider>
   </Router>
 );

@@ -26,6 +26,7 @@ function SearchBar({ setSearchQuery, searchQuery, toggleSearchRequest }) {
         onInput={(e) => {
           setSearchQuery(e.target.value);
         }}
+        sx={{ margin: "5px" }}
         fullWidth
         label="Search Metaverse"
         variant="outlined"

@@ -12,7 +12,7 @@ class Prompt extends Message {
     return (
       <Chip
         avatar={<Avatar src="/" />}
-        label={this._message.toLowerCase()}
+        label={this._message}
         size="small"
         style={{ alignContent: "center" }}
       />
