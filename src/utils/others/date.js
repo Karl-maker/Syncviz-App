@@ -41,7 +41,7 @@ export function countTimeLeft(start, time_limit) {
     <>
       {!isNaN(minutes) && (
         <>
-          {minutes > 0 ? (
+          {minutes > 0 || seconds > 0 ? (
             <>{`${minutes}:${seconds < 10 ? 0 : ""}${seconds}`}</>
           ) : (
             <>FINISHED</>
@@ -73,7 +73,7 @@ export function countDownTimer(start, timeleft) {
     <>
       {!isNaN(minutes) && (
         <>
-          {minutes > 0 ? (
+          {minutes > 0 || seconds > 0 ? (
             <>{`${minutes}:${seconds < 10 ? 0 : ""}${seconds}`}</>
           ) : (
             <>FINISHED</>

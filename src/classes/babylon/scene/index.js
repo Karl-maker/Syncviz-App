@@ -73,10 +73,10 @@ export default class Scene {
     light.intensity = 0.7;
     return BABYLON.SceneLoader.AppendAsync("", url)
       .then((result) => {
-        if (result.cameras[0]) {
-          // assuming only one camera was exported. otherwise select using name/id
-          this._scene.activeCamera = result.cameras[0];
-        }
+        // if (result.cameras[0]) {
+        //   // assuming only one camera was exported. otherwise select using name/id
+        //   this._scene.activeCamera = result.cameras[0];
+        // }
 
         return 1;
       })
